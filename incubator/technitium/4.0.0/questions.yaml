@@ -30,14 +30,13 @@ groups:
   - name: Documentation
     description: Documentation
 portals:
-  admin:
+  open:
     protocols:
       - "$kubernetes-resource_configmap_tcportal-open_protocol"
     host:
       - "$kubernetes-resource_configmap_tcportal-open_host"
     ports:
       - "$kubernetes-resource_configmap_tcportal-open_port"
-    path: ":5380/admin/"
 questions:
   - variable: global
     group: General Settings
@@ -75,7 +74,6 @@ questions:
                       description: Deployment
                     - value: DaemonSet
                       description: DaemonSet
-
               - variable: replicas
                 label: Replicas (Advanced)
                 description: Set the number of Replicas
@@ -101,8 +99,6 @@ questions:
                               additional_attrs: true
                               type: dict
                               attrs:
-
-
                                 - variable: envList
                                   label: Extra Environment Variables
                                   description: "Please be aware that some variables are set in the background, adding duplicates here might cause issues or prevent the app from starting..."
@@ -1132,7 +1128,7 @@ questions:
                                     type: string
                                     default: ""
         - variable: dns-https
-          label: "Dns-over-HTTPS (via Traefik)(via Traefik)"
+          label: "DNS-over-HTTPS"
           schema:
             additional_attrs: true
             type: dict
@@ -1271,7 +1267,7 @@ questions:
                                     type: string
                                     default: ""
         - variable: dns-tls
-          label: "DNS-over-TLS (via Traefik)"
+          label: "DNS-over-TLS"
           schema:
             additional_attrs: true
             type: dict
@@ -1566,7 +1562,7 @@ questions:
                         default: ""
                         required: true
         - variable: dns-quic
-          label: "DNS-over-QUIC (via Traefik)"
+          label: "DNS-over-QUIC"
           schema:
             additional_attrs: true
             type: dict
