@@ -1,0 +1,78 @@
+image:
+  repository: tccr.io/truecharts/technitium
+  pullPolicy: Always
+  tag: v11.2@sha256:5c553ec09a38e0bf75d88822c935be3c3493e1c0241195a98eaee644231639f3
+  readOnlyRootFilesystem: false
+  runAsNonRoot: false
+  allowPrivilegeEscalation: true
+
+podSecurityContext:
+  runAsUser: 0
+  runAsGroup: 0
+
+secretEnv:
+  DNS_SERVER_ADMIN_PASSWORD: "password"
+
+env:
+  DNS_SERVER_DOMAIN: "dns-server"
+  DNS_SERVER_RECURSION: "AllowOnlyForPrivateNetworks"
+  DNS_SERVER_RECURSION_DENIED_NETWORKS: "1.1.1.0/24"
+  DNS_SERVER_RECURSION_ALLOWED_NETWORKS: "127.0.0.1, 192.168.1.0/24, 10.0.0.0/8, 17.16.0.0/15, 17.32.0.0/16, 17.64.0.0/16"
+  DNS_SERVER_ENABLE_BLOCKING: false
+  DNS_SERVER_ALLOW_TXT_BLOCKING_REPORT: false
+  DNS_SERVER_FORWARDERS: "https://cloudflare-dns.com/dns-query"
+  DNS_SERVER_FORWARDER_PROTOCOL: "Https"
+
+service:
+  main:
+    ports:
+      main:
+        port: 5380
+        targetPort: 5380
+  dns-tcp:
+    enabled: true
+    ports:
+      dns-tcp:
+        enabled: true
+        port: 53
+        targetPort: 53
+  dns-udp:
+    enabled: true
+    ports:
+      dns-udp:
+        enabled: true
+        protocol: UDP
+        port: 53
+        targetPort: 53
+  dns-tls:
+    enabled: false
+    ports:
+      dns-tls:
+        enabled: false
+        protocol: TCP
+        port: 853
+        targetPort: 853
+  dns-quic: # Dns-over-QUIC via Traefik
+    enabled: false
+    ports:
+      dns-quic:
+        enabled: true
+        protocol: UDP
+        port: 853
+        targetPort: 853
+  dns-https: # Dns-over-HTTPS via Traefik
+    enabled: true
+    ports:
+      dns-https:
+        enabled: true
+        protocol: TCP
+        port: 80
+        targetPort: 80
+
+persistence:
+  config:
+    enabled: true
+    mountPath: "/etc/dns/config"
+
+portal:
+  enabled: true
